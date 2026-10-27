@@ -235,10 +235,10 @@ impl Sweep {
             }
             // Force the upper ends of each tuning range to align with the step
             // size, pushing them upwards if necessary.
-            let lo_hz = lo as u32 * 1_000_000;
-            let hi_hz = hi as u32 * 1_000_000;
-            let steps = (hi_hz - lo_hz).div_ceil(params.step_width_hz);
-            let full_hi = (steps * params.step_width_hz).div_ceil(1_000_000);
+            let lo_hz = lo as u64 * 1_000_000;
+            let hi_hz = hi as u64 * 1_000_000;
+            let steps = (hi_hz - lo_hz).div_ceil(params.step_width_hz.into());
+            let full_hi = lo + ((steps * params.step_width_hz as u64).div_ceil(1_000_000) as u16);
 
             data.extend_from_slice(&lo.to_le_bytes());
             data.extend_from_slice(&full_hi.to_le_bytes());
